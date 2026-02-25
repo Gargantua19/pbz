@@ -1,4 +1,5 @@
 import { useJobs, useCreateJob, useCustomers, useUpdateJob, useDeleteJob } from "@/hooks/use-business-data";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -98,6 +99,13 @@ function JobGallery({ jobId }: { jobId: number }) {
   );
 }
 
+const DEFAULT_CATEGORIES = [
+  "Interior painting",
+  "Exterior painting",
+  "Repaint",
+  "Sculpture/Idol painting",
+];
+
 const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
 
 // Helper for decimal coercion
@@ -127,8 +135,19 @@ export default function JobsPage() {
   const [customCategory, setCustomCategory] = useState("");
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
+  useEffect(() => {
+  fetch("/api/categories")
+    .then((r) => r.json())
+    .then((data) => {
+      setCategories([
+        ...DEFAULT_CATEGORIES,
+        ...data.map((c) => c.name),
+      ]);
+    });
+  }, []);
+  
   const [selectedJobForGallery, setSelectedJobForGallery] = useState<any>(null);
-
+  
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
