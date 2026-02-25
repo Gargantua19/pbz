@@ -98,12 +98,7 @@ function JobGallery({ jobId }: { jobId: number }) {
   );
 }
 
-const DEFAULT_CATEGORIES = [
-  "Interior painting",
-  "Exterior painting",
-  "Repaint",
-  "Sculpture/Idol painting",
-];
+const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
 
 // Helper for decimal coercion
 const formSchema = insertJobSchema.extend({
