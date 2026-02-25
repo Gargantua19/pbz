@@ -608,7 +608,7 @@ export async function registerRoutes(
       .from(categories)
       .where(eq(categories.userId, userId));
   
-    res.json(cats);
+    res.json(results);
   });
 
   app.post("/api/categories", async (req, res) => {
@@ -619,7 +619,7 @@ export async function registerRoutes(
       name: req.body.name,
     }).returning();
   
-    res.json(newCat);
+    res.json(result);
   });
 
   return httpServer;
