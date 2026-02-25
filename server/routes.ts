@@ -600,5 +600,16 @@ export async function registerRoutes(
     res.json({ response: "This is a dummy chat response." });
   });
 
+  app.get("/api/categories/:type", async (req, res) => {
+    const { type } = req.params;
+  
+    const result = await db
+      .select()
+      .from(categories)
+      .where(eq(categories.type, type));
+  
+    res.json(result);
+  });
+
   return httpServer;
 }
