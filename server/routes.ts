@@ -600,15 +600,26 @@ export async function registerRoutes(
     res.json({ response: "This is a dummy chat response." });
   });
 
-  app.get("/api/categories/:type", async (req, res) => {
-    const { type } = req.params;
+  app.get("/api/categories", async (req, res) => {
+    const userId = req.user.id;
   
-    const result = await db
+    const cats = await db
       .select()
       .from(categories)
-      .where(eq(categories.type, type));
+      .where(eq(categories.userId, userId));
   
-    res.json(result);
+    res.json(cats);
+  });
+
+  app.post("/api/categories", async (req, res) => {
+    const userId = req.user.id;
+  
+    const newCat = await db.insert(categories).values({
+      userId,
+      name: req.body.name,
+    }).returning();
+  
+    res.json(newCat);
   });
 
   return httpServer;
